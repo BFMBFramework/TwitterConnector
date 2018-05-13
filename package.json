@@ -1,0 +1,40 @@
+{
+  "name": "bfmb-twitter-connector",
+  "version": "0.0.0",
+  "description": "Twitter connector for BFMBFramework",
+  "main": "./dist/connector.js",
+  "scripts": {
+    "test": "node ./dist/test.js",
+    "clean": "rm -rf ./dist",
+    "build": "gulp",
+    "rebuild": "npm run clean && npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BFMBFramework/TwitterConnector.git"
+  },
+  "keywords": [
+    "comcenter",
+    "connector",
+    "twitter"
+  ],
+  "author": "Ángel González",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/BFMBFramework/TwitterConnector/issues"
+  },
+  "homepage": "https://github.com/BFMBFramework/TwitterConnector#readme",
+  "dependencies": {
+    "bfmb-base-connector": "~0.2.0",
+    "request": "^2.83.0"
+  },
+  "peerDependencies": {
+    "bfmb-comcenter": "~0.2.0"
+  },
+  "devDependencies": {
+    "@types/request": "^2.47.0",
+    "gulp": "^3.9.1",
+    "gulp-typescript": "^3.2.4",
+    "typescript": "^2.7.1"
+  }
+}
