@@ -1,5 +1,5 @@
 import {Connector, Connection} from "bfmb-base-connector";
-import * as request from "request";
+import * as Twit from "twit";
 
 export const TWITTER_URL = "https://api.twitter.com/";
 
@@ -13,11 +13,8 @@ export class TwitterConnector extends Connector {
 		const self = this;
 		let connection : TwitterConnection = new TwitterConnection(options);
 
-		connection.authenticate({}, function (err : Error, response : any) {
-			if (err) return callback(err);
-			self.connections.push(connection);
-			callback(null, connection.getId());
-		});
+		self.connections.push(connection);
+		return callback(null, connection.getId());
 	}
 
 	receiveMessage(id : string, options : any = {}, callback : Function) : void {
@@ -30,25 +27,26 @@ export class TwitterConnector extends Connector {
 }
 
 export class TwitterConnection extends Connection {
-	private token : string;
-	private last_id : number;
-	//private user : TwitterUser; 
+	private twitInstance : Twit;
 
 	constructor (options : any) {
 		super(options);
-		this.token = options.token;
-		this.last_id = 0;
+		this.twitInstance = new Twit(this.getTwitOptions(options));
 	}
 
-	authenticate (options : any = {}, callback : Function) : void {
-		request.get({url: TWITTER_URL + "oauth/authenticate?oauth_token=" + this.token}, (err : any, r : any, body : string) => {
-			const response : Array<any> = JSON.parse(body);
+	getTwitOptions(options : any) : any {
+		return {
+			consumer_key: options.consumerKey,
+			consumer_secret: options.consumerSecret,
+			access_token: options.accessToken,
+			access_token_secret: options.accessTokenSecret,
+			timeout_ms: options.timeout,
+			strictSSL: options.strictSSL
+		};
+	}
 
-			if (err) return callback(err);
-			if (!response) return callback(new Error("No response received."));
-
-			callback(null, response);
-		});
+	getTwitInstance() : Twit {
+		return this.twitInstance;
 	}
 }
 
